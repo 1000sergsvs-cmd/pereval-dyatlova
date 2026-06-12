@@ -10,10 +10,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     
-    <!-- Скрипты -->
+    <!-- Tailwind CSS (через CDN для простоты) -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Настройка Tailwind -->
+    <!-- Настройка цветов Tailwind -->
     <script>
         tailwind.config = {
             theme: {
@@ -30,7 +30,8 @@
                             text: '#292524',
                             muted: '#78716c',
                             accent: '#991b1b',
-                            border: '#d6d3d1'
+                            border: '#d6d3d1',
+                            dark: '#1c1917'
                         }
                     }
                 }
@@ -38,179 +39,181 @@
         }
     </script>
 
-    <!-- Стили -->
     <style>
-        body {
-            background-color: #f5f5f4;
-            color: #292524;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        /* Скроллбар */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #e7e5e4; }
-        ::-webkit-scrollbar-thumb { background: #a8a29e; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #78716c; }
-
-        /* Классы для вкладок */
-        .tab-pane { display: none; }
-        .tab-pane.active { display: block; }
-        
-        /* Анимация */
-        .fade-in { animation: fadeIn 0.4s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        body { background-color: #f5f5f4; color: #292524; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        /* Скрываем скроллбар в сайдбаре, но оставляем функционал */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="font-sans antialiased flex flex-col md:flex-row min-h-screen">
+<body class="font-sans antialiased flex min-h-screen">
 
-    <!-- Мобильный хедер -->
-    <header class="md:hidden bg-dossier-text text-dossier-bg p-4 sticky top-0 z-50 shadow-md">
-        <h1 class="font-serif text-xl font-bold tracking-wider">ДЕЛО № 1959</h1>
-        <nav class="flex overflow-x-auto gap-4 mt-2 pb-1 text-sm font-mono whitespace-nowrap" id="mobile-nav">
-            <!-- JS -->
-        </nav>
-    </header>
-
-    <!-- Сайдбар (десктоп) -->
-    <aside class="hidden md:flex flex-col w-64 bg-dossier-card border-r border-dossier-border h-screen sticky top-0 shrink-0 shadow-lg">
-        <div class="p-6 border-b border-dossier-border bg-dossier-text text-dossier-bg">
-            <div class="text-xs font-mono text-dossier-muted mb-1">&#9888; СОВ. СЕКРЕТНО (РАССЕКРЕЧЕНО)</div>
-            <h1 class="font-serif text-2xl font-bold uppercase tracking-widest leading-tight">Перевал<br>Дятлова</h1>
-            <p class="text-xs font-mono mt-2 opacity-70">АРХИВНЫЕ МАТЕРИАЛЫ</p>
+    <!-- САЙДБАР (Десктоп) - ЖЕСТКО ПРОПИСАН В HTML -->
+    <aside class="hidden md:flex flex-col w-72 bg-dossier-dark text-dossier-bg h-screen sticky top-0 shrink-0 shadow-2xl z-40">
+        <div class="p-6 border-b border-dossier-border border-opacity-20">
+            <div class="text-xs font-mono text-dossier-muted mb-2 tracking-widest">ДЕЛО № 1959</div>
+            <h1 class="font-serif text-2xl font-bold uppercase tracking-wider leading-tight">Перевал<br>Дятлова</h1>
+            <p class="text-xs font-mono mt-2 text-dossier-muted">Архивные материалы</p>
         </div>
-        <nav class="flex-1 overflow-y-auto py-4 font-mono text-sm" id="desktop-nav">
-            <!-- JS -->
+        
+        <!-- НАВИГАЦИЯ (Статичная, без JS) -->
+        <nav class="flex-1 overflow-y-auto py-6 px-4 space-y-1 no-scrollbar">
+            <button onclick="switchTab('intro')" class="nav-btn w-full text-left px-4 py-3 rounded-md font-mono text-sm hover:bg-dossier-bg hover:text-dossier-accent transition-colors bg-dossier-bg text-dossier-accent border-l-4 border-dossier-accent">
+                1. Введение
+            </button>
+            <button onclick="switchTab('group')" class="nav-btn w-full text-left px-4 py-3 rounded-md font-mono text-sm hover:bg-dossier-bg hover:text-dossier-accent transition-colors border-l-4 border-transparent">
+                2. Участники
+            </button>
+            <button onclick="switchTab('timeline')" class="nav-btn w-full text-left px-4 py-3 rounded-md font-mono text-sm hover:bg-dossier-bg hover:text-dossier-accent transition-colors border-l-4 border-transparent">
+                3. Хронология
+            </button>
+            <button onclick="switchTab('night')" class="nav-btn w-full text-left px-4 py-3 rounded-md font-mono text-sm hover:bg-dossier-bg hover:text-dossier-accent transition-colors border-l-4 border-transparent">
+                4. Ночь 1-2 февраля
+            </button>
+            <button onclick="switchTab('medical')" class="nav-btn w-full text-left px-4 py-3 rounded-md font-mono text-sm hover:bg-dossier-bg hover:text-dossier-accent transition-colors border-l-4 border-transparent">
+                5. Экспертиза
+            </button>
         </nav>
-        <div class="p-4 border-t border-dossier-border mt-auto flex items-center gap-2 text-xs font-mono text-dossier-muted bg-stone-50">
-            <span>© 2024 Архив</span>
+
+        <!-- ФУТЕР САЙДБАРА (Без года) -->
+        <div class="p-4 border-t border-dossier-border border-opacity-20 bg-dossier-dark">
+            <p class="text-xs font-mono text-dossier-muted text-center">Архивные материалы</p>
         </div>
     </aside>
 
-    <!-- Основной контент -->
-    <main class="flex-1 p-4 md:p-8 lg:p-12 overflow-y-auto">
+    <!-- МОБИЛЬНОЕ МЕНЮ (Простое) -->
+    <div class="md:hidden fixed top-0 left-0 w-full bg-dossier-dark text-dossier-bg z-50 shadow-lg">
+        <div class="p-4 font-serif font-bold text-lg">Перевал Дятлова</div>
+        <div class="flex overflow-x-auto gap-4 px-4 pb-3 text-xs font-mono whitespace-nowrap">
+            <button onclick="switchTab('intro')" class="nav-btn-mobile text-dossier-accent font-bold border-b-2 border-dossier-accent pb-1">Введение</button>
+            <button onclick="switchTab('group')" class="nav-btn-mobile pb-1">Участники</button>
+            <button onclick="switchTab('timeline')" class="nav-btn-mobile pb-1">Хронология</button>
+            <button onclick="switchTab('night')" class="nav-btn-mobile pb-1">Ночь</button>
+            <button onclick="switchTab('medical')" class="nav-btn-mobile pb-1">Экспертиза</button>
+        </div>
+    </div>
+
+    <!-- ОСНОВНОЙ КОНТЕНТ -->
+    <main class="flex-1 p-4 md:p-8 lg:p-12 overflow-y-auto min-h-screen mt-16 md:mt-0">
         
         <!-- ВКЛАДКА 1: ВВЕДЕНИЕ -->
-        <section id="tab-intro" class="tab-pane active fade-in max-w-4xl mx-auto">
-            <div class="border-b-2 border-dossier-accent pb-4 mb-6">
-                <h2 class="text-3xl md:text-4xl font-serif font-bold text-dossier-text">Уральский реквием</h2>
+        <div id="intro" class="tab-content active max-w-4xl mx-auto">
+            <div class="border-b-2 border-dossier-accent pb-4 mb-8">
+                <h2 class="text-3xl md:text-4xl font-serif font-bold text-dossier-dark">Уральский реквием</h2>
                 <p class="text-lg font-serif italic text-dossier-muted mt-2">Что произошло на безымянном перевале в феврале 1959 года?</p>
             </div>
-            
             <p class="text-lg mb-6 leading-relaxed">
                 История гибели группы Игоря Дятлова — одна из самых загадочных трагедий XX века. Этот интерактивный досье основан на архивных материалах, протоколах следствия и фактах.
             </p>
-
-            <div class="bg-dossier-card border border-dossier-border p-6 rounded shadow-sm mb-8">
+            <div class="bg-white border border-dossier-border p-6 rounded shadow-sm mb-8">
                 <h3 class="text-xl font-bold mb-4 font-serif flex items-center gap-2">
                     <span class="text-dossier-accent text-2xl">&#9873;</span> Контекст: СССР 1959
                 </h3>
                 <p class="mb-4">Хрущевская оттепель, гонка вооружений и закрытые города Урала создают мрачный фон событий.</p>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 font-mono text-sm">
-                    <div class="bg-dossier-bg p-3 border-l-2 border-dossier-muted">
+                    <div class="bg-gray-50 p-3 border-l-2 border-gray-400">
                         <strong class="block text-dossier-accent mb-1">ГЕОПОЛИТИКА</strong>
                         Ядерная гонка. Полеты U-2.
                     </div>
-                    <div class="bg-dossier-bg p-3 border-l-2 border-dossier-muted">
+                    <div class="bg-gray-50 p-3 border-l-2 border-gray-400">
                         <strong class="block text-dossier-accent mb-1">ЗАКРЫТЫЕ ГОРОДА</strong>
                         Свердловск-44, Свердловск-45.
                     </div>
-                    <div class="bg-dossier-bg p-3 border-l-2 border-dossier-accent bg-rose-50">
+                    <div class="bg-rose-50 p-3 border-l-2 border-dossier-accent">
                         <strong class="block text-dossier-accent mb-1">ИНЦИДЕНТЫ</strong>
                         Авария на «Маяке» (1957).
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
 
         <!-- ВКЛАДКА 2: ГРУППА -->
-        <section id="tab-group" class="tab-pane fade-in max-w-5xl mx-auto">
+        <div id="group" class="tab-content max-w-5xl mx-auto">
             <div class="border-b-2 border-dossier-accent pb-4 mb-6">
                 <h2 class="text-3xl font-serif font-bold">Лица и судьбы</h2>
                 <p class="text-lg font-serif italic text-dossier-muted mt-2">Элита турклуба УПИ</p>
             </div>
-            <p class="mb-6">Выберите участника, чтобы увидеть личное дело.</p>
-            <div id="group-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4"></div>
-            
-            <div id="member-detail" class="mt-8 bg-dossier-card border border-dossier-border p-6 rounded shadow-lg hidden">
-                <div class="flex justify-between items-start mb-4 border-b border-dossier-border pb-4">
-                    <div>
-                        <h3 id="member-name" class="text-2xl font-bold font-serif text-dossier-accent"></h3>
-                        <p id="member-role" class="font-mono text-sm text-dossier-muted uppercase"></p>
-                    </div>
-                    <button onclick="document.getElementById('member-detail').classList.add('hidden')" class="text-2xl font-bold text-dossier-muted hover:text-dossier-accent">&times;</button>
+            <p class="mb-6">Здесь будут карточки участников (в демо-режиме).</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white border border-dossier-border p-4 shadow-sm">
+                    <h3 class="font-bold text-lg mb-1">Игорь Дятлов</h3>
+                    <p class="text-sm text-dossier-muted font-mono mb-2">Староста группы</p>
+                    <p class="text-sm">Опытный турист, инженер-электрик. Лидер по духу и опыту.</p>
                 </div>
-                <p id="member-bio" class="leading-relaxed mb-4"></p>
-                <div class="p-3 bg-dossier-bg font-mono text-sm border-l-4 border-dossier-muted">
-                    <strong>Факты:</strong> <span id="member-facts"></span>
+                <div class="bg-white border border-dossier-border p-4 shadow-sm">
+                    <h3 class="font-bold text-lg mb-1">Рустем Слободин</h3>
+                    <p class="text-sm text-dossier-muted font-mono mb-2">Студент</p>
+                    <p class="text-sm">Ветеран войны, участвовал в обороне Москвы.</p>
+                </div>
+                <div class="bg-white border border-dossier-border p-4 shadow-sm">
+                    <h3 class="font-bold text-lg mb-1">Юрий Юдин</h3>
+                    <p class="text-sm text-dossier-muted font-mono mb-2">Студент</p>
+                    <p class="text-sm">Единственный, кто вышел из группы до трагедии из-за травмы ноги.</p>
                 </div>
             </div>
-        </section>
+        </div>
 
         <!-- ВКЛАДКА 3: ХРОНОЛОГИЯ -->
-        <section id="tab-timeline" class="tab-pane fade-in max-w-4xl mx-auto">
+        <div id="timeline" class="tab-content max-w-4xl mx-auto">
             <div class="border-b-2 border-dossier-accent pb-4 mb-6">
                 <h2 class="text-3xl font-serif font-bold">Хроника экспедиции</h2>
                 <p class="text-lg font-serif italic text-dossier-muted mt-2">От старта до трагедии</p>
             </div>
-            <div class="flex flex-col md:flex-row gap-8">
-                <div class="md:w-1/3 border-r-2 border-dossier-border pr-4">
-                    <ul id="timeline-list" class="space-y-2 font-mono text-sm"></ul>
+            <div class="space-y-6">
+                <div class="flex gap-4">
+                    <div class="w-24 font-mono text-sm text-dossier-accent font-bold">23 янв</div>
+                    <div class="bg-white border border-dossier-border p-4 rounded shadow-sm flex-1">
+                        <p class="text-sm">Группа выезжает из Свердловска на поезде.</p>
+                    </div>
                 </div>
-                <div class="md:w-2/3">
-                    <div id="timeline-content" class="bg-dossier-card border border-dossier-border p-6 rounded shadow-sm min-h-[300px]">
-                        <p class="text-dossier-muted italic">Выберите дату слева.</p>
+                <div class="flex gap-4">
+                    <div class="w-24 font-mono text-sm text-dossier-accent font-bold">28 янв</div>
+                    <div class="bg-white border border-dossier-border p-4 rounded shadow-sm flex-1">
+                        <p class="text-sm">Прибытие в Вильчю-Парма. Начало лыжного похода.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4">
+                    <div class="w-24 font-mono text-sm text-dossier-accent font-bold">1 фев</div>
+                    <div class="bg-white border border-dossier-border p-4 rounded shadow-sm flex-1">
+                        <p class="text-sm">Подъем на перевал. Установка палатки. Начало бурана.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4">
+                    <div class="w-24 font-mono text-sm text-dossier-accent font-bold">2 фев</div>
+                    <div class="bg-white border border-dossier-border p-4 rounded shadow-sm flex-1">
+                        <p class="text-sm text-red-600 font-bold">Трагедия. Палатка найдена разрезанной изнутри.</p>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
 
         <!-- ВКЛАДКА 4: ФАКТЫ НОЧИ -->
-        <section id="tab-night" class="tab-pane fade-in max-w-4xl mx-auto">
+        <div id="night" class="tab-content max-w-4xl mx-auto">
             <div class="border-b-2 border-dossier-accent pb-4 mb-6">
                 <h2 class="text-3xl font-serif font-bold">Трагическая ночь</h2>
                 <p class="text-lg font-serif italic text-dossier-muted mt-2">1-2 февраля 1959</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="bg-dossier-card border border-dossier-border p-5 shadow-sm">
+                <div class="bg-white border border-dossier-border p-5 shadow-sm">
                     <h4 class="font-bold font-serif text-lg mb-2 text-dossier-accent">Палатка разрезана изнутри</h4>
                     <p class="text-sm">Люди бежали в панике, не тратя время на открытие входа.</p>
                 </div>
-                <div class="bg-dossier-card border border-dossier-border p-5 shadow-sm">
+                <div class="bg-white border border-dossier-border p-5 shadow-sm">
                     <h4 class="font-bold font-serif text-lg mb-2 text-dossier-accent">Бегство в одежде для дома</h4>
                     <p class="text-sm">Теплая одежда, обувь и топоры остались внутри. Следы вели босых людей в -30°C.</p>
                 </div>
-                <div class="bg-dossier-card border border-dossier-border p-5 shadow-sm">
+                <div class="bg-white border border-dossier-border p-5 shadow-sm">
                     <h4 class="font-bold font-serif text-lg mb-2 text-dossier-accent">Фонарик на снегу</h4>
                     <p class="text-sm">Включенный фонарик нашли под слоем снега на крыше палатки.</p>
                 </div>
-                <div class="bg-dossier-card border border-dossier-border p-5 shadow-sm">
+                <div class="bg-white border border-dossier-border p-5 shadow-sm">
                     <h4 class="font-bold font-serif text-lg mb-2 text-dossier-accent">Костер и березы</h4>
                     <p class="text-sm">У ручья нашли настил из срезанных деревьев. Они пытались согреться.</p>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- ВКЛАДКА 5: ЭКСПЕРТИЗА -->
-        <section id="tab-medical" class="tab-pane fade-in max-w-5xl mx-auto">
-            <div class="border-b-2 border-dossier-accent pb-4 mb-6">
-                <h2 class="text-3xl font-serif font-bold">Судебно-медицинская экспертиза</h2>
-                <p class="text-lg font-serif italic text-dossier-muted mt-2">Ключевое противоречие</p>
-            </div>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-                <div class="bg-dossier-card border border-dossier-border p-4 shadow-sm">
-                    <h3 class="font-bold font-mono text-sm text-center mb-4 text-dossier-muted">ПРИЧИНА СМЕРТИ</h3>
-                    <div class="chart-container"><canvas id="chart-cause"></canvas></div>
-                </div>
-                <div class="bg-dossier-card border border-dossier-border p-4 shadow-sm">
-                    <h3 class="font-bold font-mono text-sm text-center mb-4 text-dossier-muted">ХАРАКТЕР ТРАВМ</h3>
-                    <div class="chart-container"><canvas id="chart-injuries"></canvas></div>
-                </div>
-            </div>
-            <div class="bg-dossier-bg border border-dossier-border p-6">
-                <h3 class="font-serif font-bold text-xl text-dossier-accent mb-4">&#9760; Тела в овраге</h3>
-                <p class="text-sm mb-4">Травмы Дубининой и Золотарева сравнимы с ударом автомобиля. Отсутствие языка и глаз — результат естественного разложения.</p>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left">
-                        <thead class="font-mono bg-dossier-border"><tr><th class="p-2">Имя</th><th class="p-2">Травмы</th><th class="p-2">Причина</th></tr></thead>
-                        <tbody class="divide-y divide-dossier-border bg
+        <!-- ВКЛАДКА 5: ЭКСП
