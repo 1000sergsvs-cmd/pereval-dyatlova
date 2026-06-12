@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+        <!-- Подключаем шрифт Inter для четкости на любых экранах -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Уральский реквием: Тайна перевала Дятлова</title>
@@ -12,6 +16,18 @@
         tailwind.config = {
             theme: {
                 extend: {
+
+     // Добавляем шрифт Inter как основной
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          // Улучшаем сглаживание шрифтов для всех ОС
+          textRendering: 'optimizeLegibility',
+          WebkitFontSmoothing: 'antialiased',
+          MozOsxFontSmoothing: 'grayscale',
+          
+          // Ваши старые настройки цветов (оставьте их как были)
+                    
                     colors: {
                         dossier: {
                             bg: '#f5f5f4', // stone-100
