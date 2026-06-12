@@ -12,7 +12,6 @@
     
     <!-- Скрипты -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <!-- Настройка Tailwind -->
     <script>
@@ -41,28 +40,11 @@
 
     <!-- Стили -->
     <style>
-        /* Глобальное сглаживание шрифтов */
         body {
             background-color: #f5f5f4;
             color: #292524;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            text-rendering: optimizeLegibility;
-        }
-
-        /* Контейнер для графиков */
-        .chart-container {
-            position: relative;
-            width: 100%;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 300px;
-            max-height: 400px;
-        }
-        @media (min-width: 768px) { 
-            .chart-container { height: 350px; } 
         }
 
         /* Скроллбар */
@@ -71,22 +53,13 @@
         ::-webkit-scrollbar-thumb { background: #a8a29e; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #78716c; }
 
-        /* Анимации и классы */
-        .tab-active { border-bottom: 2px solid #991b1b; color: #991b1b; font-weight: 600; }
-        .nav-active { background-color: #e7e5e4; border-left: 4px solid #991b1b; }
+        /* Классы для вкладок */
+        .tab-pane { display: none; }
+        .tab-pane.active { display: block; }
         
+        /* Анимация */
         .fade-in { animation: fadeIn 0.4s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        /* Защита от наложения контента */
-        .section-content { display: none; }
-        .section-content.active { display: block; }
-        
-        /* Исправление для сайдбара: гарантируем видимость на десктопе */
-        aside { display: none; }
-        @media (min-width: 768px) {
-            aside { display: flex; }
-        }
     </style>
 </head>
 <body class="font-sans antialiased flex flex-col md:flex-row min-h-screen">
@@ -109,7 +82,7 @@
         <nav class="flex-1 overflow-y-auto py-4 font-mono text-sm" id="desktop-nav">
             <!-- JS -->
         </nav>
-        <div class="p-4 border-t border-dossier-border mt-auto flex items-center gap-2 text-xs font-mono text-dossier-muted bg-stone-50 gemini-footer-safe">
+        <div class="p-4 border-t border-dossier-border mt-auto flex items-center gap-2 text-xs font-mono text-dossier-muted bg-stone-50">
             <span>© 2024 Архив</span>
         </div>
     </aside>
@@ -117,8 +90,8 @@
     <!-- Основной контент -->
     <main class="flex-1 p-4 md:p-8 lg:p-12 overflow-y-auto">
         
-        <!-- СЕКЦИЯ 1: ВВЕДЕНИЕ -->
-        <section id="sec-intro" class="section-content active fade-in max-w-4xl mx-auto">
+        <!-- ВКЛАДКА 1: ВВЕДЕНИЕ -->
+        <section id="tab-intro" class="tab-pane active fade-in max-w-4xl mx-auto">
             <div class="border-b-2 border-dossier-accent pb-4 mb-6">
                 <h2 class="text-3xl md:text-4xl font-serif font-bold text-dossier-text">Уральский реквием</h2>
                 <p class="text-lg font-serif italic text-dossier-muted mt-2">Что произошло на безымянном перевале в феврале 1959 года?</p>
@@ -150,8 +123,8 @@
             </div>
         </section>
 
-        <!-- СЕКЦИЯ 2: ГРУППА -->
-        <section id="sec-group" class="section-content hidden fade-in max-w-5xl mx-auto">
+        <!-- ВКЛАДКА 2: ГРУППА -->
+        <section id="tab-group" class="tab-pane fade-in max-w-5xl mx-auto">
             <div class="border-b-2 border-dossier-accent pb-4 mb-6">
                 <h2 class="text-3xl font-serif font-bold">Лица и судьбы</h2>
                 <p class="text-lg font-serif italic text-dossier-muted mt-2">Элита турклуба УПИ</p>
@@ -174,8 +147,8 @@
             </div>
         </section>
 
-        <!-- СЕКЦИЯ 3: ХРОНОЛОГИЯ -->
-        <section id="sec-timeline" class="section-content hidden fade-in max-w-4xl mx-auto">
+        <!-- ВКЛАДКА 3: ХРОНОЛОГИЯ -->
+        <section id="tab-timeline" class="tab-pane fade-in max-w-4xl mx-auto">
             <div class="border-b-2 border-dossier-accent pb-4 mb-6">
                 <h2 class="text-3xl font-serif font-bold">Хроника экспедиции</h2>
                 <p class="text-lg font-serif italic text-dossier-muted mt-2">От старта до трагедии</p>
@@ -192,8 +165,8 @@
             </div>
         </section>
 
-        <!-- СЕКЦИЯ 4: ФАКТЫ НОЧИ -->
-        <section id="sec-night" class="section-content hidden fade-in max-w-4xl mx-auto">
+        <!-- ВКЛАДКА 4: ФАКТЫ НОЧИ -->
+        <section id="tab-night" class="tab-pane fade-in max-w-4xl mx-auto">
             <div class="border-b-2 border-dossier-accent pb-4 mb-6">
                 <h2 class="text-3xl font-serif font-bold">Трагическая ночь</h2>
                 <p class="text-lg font-serif italic text-dossier-muted mt-2">1-2 февраля 1959</p>
@@ -211,4 +184,33 @@
                     <h4 class="font-bold font-serif text-lg mb-2 text-dossier-accent">Фонарик на снегу</h4>
                     <p class="text-sm">Включенный фонарик нашли под слоем снега на крыше палатки.</p>
                 </div>
-                <div class
+                <div class="bg-dossier-card border border-dossier-border p-5 shadow-sm">
+                    <h4 class="font-bold font-serif text-lg mb-2 text-dossier-accent">Костер и березы</h4>
+                    <p class="text-sm">У ручья нашли настил из срезанных деревьев. Они пытались согреться.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ВКЛАДКА 5: ЭКСПЕРТИЗА -->
+        <section id="tab-medical" class="tab-pane fade-in max-w-5xl mx-auto">
+            <div class="border-b-2 border-dossier-accent pb-4 mb-6">
+                <h2 class="text-3xl font-serif font-bold">Судебно-медицинская экспертиза</h2>
+                <p class="text-lg font-serif italic text-dossier-muted mt-2">Ключевое противоречие</p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <div class="bg-dossier-card border border-dossier-border p-4 shadow-sm">
+                    <h3 class="font-bold font-mono text-sm text-center mb-4 text-dossier-muted">ПРИЧИНА СМЕРТИ</h3>
+                    <div class="chart-container"><canvas id="chart-cause"></canvas></div>
+                </div>
+                <div class="bg-dossier-card border border-dossier-border p-4 shadow-sm">
+                    <h3 class="font-bold font-mono text-sm text-center mb-4 text-dossier-muted">ХАРАКТЕР ТРАВМ</h3>
+                    <div class="chart-container"><canvas id="chart-injuries"></canvas></div>
+                </div>
+            </div>
+            <div class="bg-dossier-bg border border-dossier-border p-6">
+                <h3 class="font-serif font-bold text-xl text-dossier-accent mb-4">&#9760; Тела в овраге</h3>
+                <p class="text-sm mb-4">Травмы Дубининой и Золотарева сравнимы с ударом автомобиля. Отсутствие языка и глаз — результат естественного разложения.</p>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left">
+                        <thead class="font-mono bg-dossier-border"><tr><th class="p-2">Имя</th><th class="p-2">Травмы</th><th class="p-2">Причина</th></tr></thead>
+                        <tbody class="divide-y divide-dossier-border bg
